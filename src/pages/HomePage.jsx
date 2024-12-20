@@ -62,7 +62,7 @@ function HomePage() {
                 {error && <p className="error-message">{error}</p>}
                 {!loading && !error && filteredArticles.length === 0 && <p>No articles available.</p>}
 
-                <div className="articles-list">
+                <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-3">
                     {filteredArticles.map((article, index) => (
                         <ArticleCard key={index} article={article} />
                     ))}
