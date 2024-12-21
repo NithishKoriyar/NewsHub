@@ -1,0 +1,97 @@
+Currents API
+https://api.currentsapi.services/v1/search?keywords=AI&category=technology&language=en&apiKey=MaIKvr8UXCNK-7CkFHt4BAD6PJ3x3JZA5O2T6ghapWeTcllF
+{
+  "status": "ok",
+  "news": [
+    {
+      "id": "cace5fc0-9a72-488f-b1cb-62cd6522e57a",
+      "title": "Beyond smartphones: ChatGPT now available on landlines (and WhatsApp)",
+      "description": "In a move acknowledging that not everyone has or wants a smartphone, OpenAI has announced the expansion of ChatGPT's accessibility to landline phones.",
+      "url": "https://www.techspot.com/news/106040-beyond-smartphones-chatgpt-now-available-landlines-whatsapp.html",
+      "author": "Skye Jacobs",
+      "image": "https://www.techspot.com/images2/news/bigimage/2024/12/2024-12-19-image-32.jpg",
+      "language": "en",
+      "category": [
+        "technology"
+      ],
+      "published": "2024-12-20 11:58:00 +0000"
+    },
+
+
+
+newsapi
+https://newsapi.org/v2/top-headlines?category=technology&apiKey=68008431ecca4451a586717f5ca325c2
+
+{
+  "status": "ok",
+  "totalResults": 61,
+  "articles": [
+    {
+      "source": {
+        "id": null,
+        "name": "Push Square"
+      },
+      "author": "Sammy Barker",
+      "title": "Sony Becomes Kadokawa's Biggest Shareholder As Companies Form Alliance - Push Square",
+      "description": "Hopes to further expand publishing of Kadokawa's games",
+      "url": "https://www.pushsquare.com/news/2024/12/sony-becomes-kadokawas-biggest-shareholder-as-companies-form-alliance",
+      "urlToImage": "https://images.pushsquare.com/59d221a89b224/1280x720.jpg",
+      "publishedAt": "2024-12-19T09:00:00Z",
+      "content": "Image: Push Square\r\nSony, it seems, will not acquire Kadokawa outright. Instead, the giant Japanese organisations have today announced a strategic capital and business alliance, which will see Sony b… [+4193 chars]"
+    },
+
+
+
+    guardianApi
+    https://content.guardianapis.com/search?q=ai&api-key=b09a7947-19e5-4b10-95ed-0db996acea2c
+
+    {
+        "response": {
+          "status": "ok",
+          "userTier": "developer",
+          "total": 10288,
+          "startIndex": 1,
+          "pageSize": 10,
+          "currentPage": 1,
+          "pages": 1029,
+          "orderBy": "relevance",
+          "results": [
+            {
+              "id": "commentisfree/2024/oct/16/california-ai-safety-bill-gavin-newsom",
+              "type": "article",
+              "sectionId": "commentisfree",
+              "sectionName": "Opinion",
+              "webPublicationDate": "2024-10-16T10:00:03Z",
+              "webTitle": "Californians want controls on AI. Why did Gavin Newsom veto an AI safety bill? | Garrison Lovely",
+              "webUrl": "https://www.theguardian.com/commentisfree/2024/oct/16/california-ai-safety-bill-gavin-newsom",
+              "apiUrl": "https://content.guardianapis.com/commentisfree/2024/oct/16/california-ai-safety-bill-gavin-newsom",
+              "isHosted": false,
+              "pillarId": "pillar/opinion",
+              "pillarName": "Opinion"
+            },
+
+
+
+
+            
+ worldnewsapi
+https://api.worldnewsapi.com/top-news?source-country=in&language=en&date=2024-09-29&q=AI&category=technology&sources=bbc-news
+
+            {
+                "top_news": [
+                  {
+                    "news": [
+                      {
+                        "id": 257787036,
+                        "title": "Floods, landslides kill 66 people in Nepal",
+                        "text": "KATHMANDU: Floods and landslides caused by incessant rain killed at least 66 people and injured 60 others in Nepal, officials said on Saturday. Parts of Nepal have been inundated with rainfall since Thursday, prompting disaster authorities to warn of flash floods. Nepal Police Deputy Spokesperson Bishwo Adhikari said that out of the 66 people killed in the Himalayan nation due to the continuous rainfall, 34 were killed in the Kathmandu valley. As many as 60 people were also injured in the floods. A total of 79 people remain missing countrywide, with 16 unaccounted for in Kathmandu Valley. More than 3,000 people have also been rescued. Adhikari said the main highways have been blocked in 63 locations across the country. Meanwhile, Acting Prime Minister and Minister for Urban Development Prakash Man Singh called an emergency meeting involving various ministers, including the Home Minister, Home Secretary, and chiefs of security agencies, instructing them to expedite search and rescue operations. The government has ordered the closure of all schools across Nepal for three days and the halting of all ongoing exams. Kathmandu was out of power the entire day as the main transmission line was obstructed due to the floods, but power resumed in the evening. All entry points to Kathmandu have also been obstructed due to landslides triggered by rains. Police reported that 226 houses have been submerged in Kathmandu, and a rescue team of around 3,000 security personnel has been deployed from the Nepal Police in the affected areas.",
+                        "summary": "",
+                        "url": "https://timesofindia.indiatimes.com/world/south-asia/floods-landslides-kill-66-people-in-nepal/articleshow/113777609.cms",
+                        "image": "https://static.toiimg.com/thumb/resizemode-4,width-1280,height-720,msid-113777644/113777644.jpg",
+                        "video": null,
+                        "publish_date": "2024-09-29 01:28:07",
+                        "author": null,
+                        "language": "en",
+                        "source_country": "in",
+                        "sentiment": -0.432
+                      },

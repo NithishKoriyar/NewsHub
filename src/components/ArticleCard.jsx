@@ -1,6 +1,6 @@
 
 import PropTypes from 'prop-types';
-import { formatDate } from '../hooks/formatDate';
+import { formatDate } from '../helper/formatDate';
 import noImageInUrl from '../assets/No_Image_Available.jpg';
 
 // Separate component for article metadata
@@ -32,7 +32,6 @@ const ArticleImage = ({ imageUrl, title }) => {
 };
 
 function ArticleCard({ article }) {
-  console.log(article)
   const {
     title,
     description,
