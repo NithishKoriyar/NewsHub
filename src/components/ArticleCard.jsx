@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { formatDate } from '../helper/formatDate';
 import noImageInUrl from '../assets/No_Image_Available.jpg';
@@ -25,7 +24,7 @@ const ArticleImage = ({ imageUrl, title }) => {
         loading="lazy"
         alt={title || 'Article image'}
         className="w-full h-48 object-cover"
-        onError={(e) => (e.target.src = noImageInUrl)} 
+        onError={(e) => (e.target.src = noImageInUrl)}
       />
     </div>
   );
@@ -45,22 +44,18 @@ function ArticleCard({ article }) {
   return (
     <div className="flex flex-col h-full rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
       <ArticleImage imageUrl={image} title={title} />
-
       <h2 className="text-2xl font-bold text-gray-800 mb-3 line-clamp-2">
         {title}
       </h2>
-
       <p className="text-gray-600 mb-4 line-clamp-3">
         {description}
       </p>
-
       <div className="flex items-center justify-between">
         <ArticleMetadata
           author={author}
           source={source}
           date={date}
         />
-
       </div>
       <a
         href={url}
@@ -75,20 +70,20 @@ function ArticleCard({ article }) {
   );
 }
 
-// PropTypes for the metadata component
+
+
+// Prop types for the components
 ArticleMetadata.propTypes = {
   author: PropTypes.string,
   source: PropTypes.string,
   date: PropTypes.string
 };
 
-// PropTypes for the image component
 ArticleImage.propTypes = {
   imageUrl: PropTypes.string,
   title: PropTypes.string.isRequired
 };
 
-// Main component PropTypes
 ArticleCard.propTypes = {
   article: PropTypes.shape({
     title: PropTypes.string.isRequired,

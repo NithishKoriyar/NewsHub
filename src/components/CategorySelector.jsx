@@ -1,12 +1,28 @@
 import PropTypes from 'prop-types';
 
+const CategoryButton = ({ category, isSelected, onClick }) => (
+  <button
+    className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
+      isSelected ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-200'
+    }`}
+    onClick={() => onClick(category)}
+  >
+    {category}
+  </button>
+);
+
 const CategorySelector = ({ categories, onSelectCategory, selectedCategories, isLoading }) => {
+  const isAllSelected = selectedCategories.length === 0;
+
   const handleCategoryClick = (category) => {
-    if (selectedCategories.includes(category)) {
-      onSelectCategory(selectedCategories.filter(cat => cat !== category));
-    } else {
-      onSelectCategory([...selectedCategories, category]);
-    }
+    const updatedCategories =
+      category === 'All'
+        ? [] // Deselect all if "All" is clicked
+        : selectedCategories.includes(category)
+        ? selectedCategories.filter((cat) => cat !== category) // Remove category
+        : [...selectedCategories, category]; // Add category
+
+    onSelectCategory(updatedCategories);
   };
 
   if (isLoading) {
@@ -18,27 +34,34 @@ const CategorySelector = ({ categories, onSelectCategory, selectedCategories, is
   }
 
   return (
-    <div className="bg-gray-100 p-4">
-      <div className="overflow-x-auto">
-        <div className="grid grid-rows-2 auto-rows-max gap-2" 
-             style={{ gridTemplateColumns: `repeat(${Math.ceil(categories.length / 2)}, max-content)` }}>
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`px-4 py-2 rounded-full text-sm m-1 font-medium whitespace-nowrap ${
-                selectedCategories.includes(category)
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-200'
-              }`}
-              onClick={() => handleCategoryClick(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+    <div className="bg-gray-100">
+      <div className="flex overflow-x-auto no-wrap gap-2 py-3 justify-center">
+        {/* Render "All" button */}
+        <CategoryButton
+          category="All"
+          isSelected={isAllSelected}
+          onClick={handleCategoryClick}
+        />
+        {/* Render other categories */}
+        {categories.map((category) => (
+          <CategoryButton
+            key={category}
+            category={category}
+            isSelected={selectedCategories.includes(category)}
+            onClick={handleCategoryClick}
+          />
+        ))}
       </div>
     </div>
   );
+};
+
+
+
+CategoryButton.propTypes = {
+  category: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 CategorySelector.propTypes = {

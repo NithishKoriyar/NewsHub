@@ -11,13 +11,13 @@ const SearchInput = ({ onSearch }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full flex">
+    <form onSubmit={handleSubmit} className="relative w-full flex justify-center">
       <input
         type="text"
         placeholder="Search..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className=" w-full sm:w-2/3 pl-3 pr-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
 
       <button

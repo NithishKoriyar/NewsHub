@@ -95,3 +95,48 @@ https://api.worldnewsapi.com/top-news?source-country=in&language=en&date=2024-09
                         "source_country": "in",
                         "sentiment": -0.432
                       },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      https://api.nytimes.com/svc/search/v2/articlesearch.json?q=games&api-key=3HSNMsAQVlAhFAQU1KUdAsq0imGs7u8b
+
+
+
+
+
+
+
+
+
+
+
+                      ///////////
+
+
+                      https://api.nytimes.com/svc/search/v2/articlesearch.json?q=games,technology,health&api-key=3HSNMsAQVlAhFAQU1KUdAsq0imGs7u8b
+                      https://content.guardianapis.com/search?q=games,technology,health&api-key=b09a7947-19e5-4b10-95ed-0db996acea2c
+                      https://newsdata.io/api/1/latest?apikey=pub_62929980677fd39f31335878c0af88bdd56be&q=games,technology,health&language=en
+
+
+
+
+
+                      https://newsapi.org/v2/everything?q=games,technology,health&apiKey=68008431ecca4451a586717f5ca325c2 /// top results 0
+
+
+
+

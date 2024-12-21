@@ -26,6 +26,21 @@ export const normalizeArticles = (apiType, data) => {
                 image: article.urlToImage || null,
             })) || [],
 
+        nyTimesApi: (data) =>
+            data?.response?.docs?.map((doc) => ({
+                title: doc.abstract || 'No Title',
+                description: doc.snippet || 'No Description',
+                date: doc.pub_date || 'No Date',
+                url: doc.web_url || '#',
+                source: doc.source || 'The New York Times',
+                author: 'Unknown',
+                category: 'General',
+                image: doc.multimedia?.find((media) => media.subtype === 'xlarge')?.url
+                    ? `https://www.nytimes.com/${doc.multimedia.find((media) => media.subtype === 'xlarge').url}`
+                    : null,
+            })) || [],
+
+
         guardianApi: (data) =>
             data?.response?.results?.map((result) => ({
                 title: result.webTitle || 'No Title',
@@ -36,18 +51,6 @@ export const normalizeArticles = (apiType, data) => {
                 author: 'Unknown',
                 category: result.sectionName || 'General',
                 image: null,
-            })) || [],
-
-        currentsApi: (data) =>
-            data?.news?.map((article) => ({
-                title: article.title || 'No Title',
-                description: article.description || 'No Description',
-                date: article.published || 'No Date',
-                url: article.url || '#',
-                source: 'Currents API',
-                author: article.author || 'Unknown',
-                category: article.category?.join(', ') || 'General',
-                image: article.image || null,
             })) || [],
 
         newsDataApi: (data) =>

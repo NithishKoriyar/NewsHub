@@ -1,44 +1,24 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Loader from '../components/Loader';
 import ArticleCard from '../components/ArticleCard';
 import useArticles from "../hooks/useArticles";
 import CategorySelector from '../components/CategorySelector';
-import normalizeDate from '../helper/normalizeDate';
+import useFilter from '../hooks/useFilter';
 
 function HomePage() {
   const [keyword, setKeyword] = useState('news');
   const { data, error, isLoading } = useArticles(keyword);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedSource, setSelectedSource] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-
-  const { normalizedArticles = [], uniqueSources = [], uniqueCategories = [] } = data || {};
-
-  const filteredData = useMemo(() => {
-    return normalizedArticles.filter(article => {
-      const categoryMatch = !selectedCategories.length || selectedCategories.includes(article.category);
-      const sourceMatch = !selectedSource || article.source === selectedSource;
-      const dateMatch = !selectedDate || normalizeDate(article.date) === normalizeDate(selectedDate);
-      return categoryMatch && sourceMatch && dateMatch;
-    });
-  }, [normalizedArticles, selectedCategories, selectedSource, selectedDate]);
+  const { filteredData, setSelectedCategories, setSelectedSource, setSelectedDate, clearFilters, selectedCategories, selectedSource, selectedDate } = useFilter(data?.normalizedArticles || []);
 
   const handleSearch = (searchQuery) => setKeyword(searchQuery);
   const handleDateFilter = (date) => setSelectedDate(date);
 
-  const clearFilters = () => {
-    setSelectedSource('');
-    setSelectedDate('');
-    setSelectedCategories([]);
-  };
-
   const hasFilters = selectedCategories.length || selectedSource || selectedDate;
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar
-        uniqueSources={uniqueSources}
+        uniqueSources={data?.uniqueSources || []}
         isLoading={isLoading}
         onSourceChange={setSelectedSource}
         onSearch={handleSearch}
@@ -49,7 +29,7 @@ function HomePage() {
 
       <main className="mx-auto">
         <CategorySelector
-          categories={uniqueCategories}
+          categories={data?.uniqueCategories || []}
           isLoading={isLoading}
           selectedCategories={selectedCategories}
           onSelectCategory={setSelectedCategories}

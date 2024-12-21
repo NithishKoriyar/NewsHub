@@ -21,6 +21,12 @@ const Navbar = ({
   const [selectedDate, setSelectedDate] = useState('');
 
   const handleSearch = (query) => {
+    if (query.length < 2) {
+      alert("Please enter atleast 2 characters")
+      return
+
+    }
+
     setSearchQuery(query);
     onSearch?.(query);
   };
@@ -82,30 +88,27 @@ const Navbar = ({
           <div className="flex items-center space-x-4">
             {/* Your Feed Button */}
             <Link
-              to="/your-feed"
-              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-4 py-2 rounded-md ml-1"
+              to="/feed"
+              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-4 py-1.5 rounded-md ml-1 border-2 border-blue-400"
             >
               Your Feed
             </Link>
 
-
-
             {/* Search Button */}
             <button
               onClick={() => setIsSearchVisible((prev) => !prev)}
-              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-2 py-2 rounded-md ml-1"
+              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-2 py-1.5 rounded-md ml-1 border-2 border-blue-400"
               aria-label="Toggle search"
             >
               {isSearchVisible ? <SearchX className="h-6 w-6" /> : <Search className="h-6 w-6" />}
             </button>
-
 
             {/* Clear Filters Button */}
             {hasFilters && (
               <button
                 onClick={handleClearFilters}
                 className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
-                title='Clear Filters'
+                title="Clear Filters"
               >
                 Reset
               </button>
@@ -113,7 +116,7 @@ const Navbar = ({
 
             <button
               onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset border-2 border-blue-400 md:hidden"
               aria-expanded={isMenuOpen}
               aria-label="Main menu"
             >
@@ -147,7 +150,7 @@ Navbar.propTypes = {
   onSearch: PropTypes.func,
   onDateChange: PropTypes.func,
   clearFilters: PropTypes.func.isRequired,
-  hasFilters: PropTypes.bool.isRequired
+  hasFilters: PropTypes.bool.isRequired,
 };
 
 export default Navbar;
