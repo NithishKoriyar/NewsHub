@@ -35,7 +35,7 @@ const CategorySelector = ({ categories, onSelectCategory, selectedCategories, is
 
   return (
     <div className="bg-gray-100">
-      <div className="flex overflow-x-auto no-wrap gap-2 py-3 justify-center">
+      <div className="flex overflow-x-auto no-wrap gap-2 py-3  px-4">
         {/* Render "All" button */}
         <CategoryButton
           category="All"

@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
-import PersonalizedNews from './pages/PersonalizedNews'
+import PersonalizedFeed from './pages/PersonalizedFeed'
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/feed" element={<PersonalizedNews />} />
+          <Route path="/feed" element={<PersonalizedFeed />} />
         </Routes>
       </BrowserRouter>
     </>
