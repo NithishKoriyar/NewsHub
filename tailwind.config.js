@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridAutoRows: {
+        masonry: 'minmax(100px, auto)', // Adjust min and max values as needed
+      },
+    },
   },
   plugins: [],
 }

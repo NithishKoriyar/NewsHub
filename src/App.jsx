@@ -3,7 +3,6 @@ import HomePage from './pages/HomePage'
 import PersonalizedFeed from './pages/PersonalizedFeed'
 
 function App() {
-
   return (
     <>
       <BrowserRouter>

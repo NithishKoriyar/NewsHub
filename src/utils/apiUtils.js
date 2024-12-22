@@ -16,21 +16,20 @@ export const normalizeArticles = (apiType, data) => {
     const normalizers = {
         newsApi: (data) =>
             data?.articles?.filter((article) => article.source?.name !== '[Removed]')?.map((article) => ({
-                title: article.title || 'No Title',
+                               title: article.title || 'No Title',
                 description: article.description || 'No Description',
-                date: article.publishedAt || 'No Date',
                 url: article.url || '#',
                 source: article.source?.name || 'Unknown',
                 author: article.author || 'Unknown',
                 category: 'General',
                 image: article.urlToImage || null,
+                date: article.publishedAt ? new Date(article.publishedAt).toISOString() : 'No Date',
             })) || [],
 
         nyTimesApi: (data) =>
             data?.response?.docs?.map((doc) => ({
                 title: doc.abstract || 'No Title',
                 description: doc.snippet || 'No Description',
-                date: doc.pub_date || 'No Date',
                 url: doc.web_url || '#',
                 source: doc.source || 'The New York Times',
                 author: 'Unknown',
@@ -38,31 +37,31 @@ export const normalizeArticles = (apiType, data) => {
                 image: doc.multimedia?.find((media) => media.subtype === 'xlarge')?.url
                     ? `https://www.nytimes.com/${doc.multimedia.find((media) => media.subtype === 'xlarge').url}`
                     : null,
+                date: doc.pub_date ? new Date(doc.pub_date).toISOString() : 'No Date',
             })) || [],
-
 
         guardianApi: (data) =>
             data?.response?.results?.map((result) => ({
                 title: result.webTitle || 'No Title',
                 description: result.fields?.trailText || 'No Description',
-                date: result.webPublicationDate || 'No Date',
                 url: result.webUrl || '#',
                 source: 'The Guardian',
                 author: 'Unknown',
                 category: result.sectionName || 'General',
                 image: null,
+                date: result.webPublicationDate ? new Date(result.webPublicationDate).toISOString() : 'No Date',
             })) || [],
 
         newsDataApi: (data) =>
             data?.results?.map((result) => ({
                 title: result.title || 'No Title',
                 description: result.description || 'No Description',
-                date: result.pubDate || 'No Date',
                 url: result.link || '#',
                 source: result.source_name || result.source_id || 'Unknown',
                 author: result.creator?.join(', ') || 'Unknown',
                 category: result.category?.join(', ') || 'General',
                 image: result.image_url || null,
+                date: result.pubDate ? new Date(result.pubDate).toISOString() : 'No Date',
             })) || [],
     };
 
@@ -72,8 +71,7 @@ export const normalizeArticles = (apiType, data) => {
         return [];
     }
 
-    const normalized = normalize(data);
-    return normalized.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return normalize(data); // Remove the sort here since we'll sort all articles together
 };
 
 

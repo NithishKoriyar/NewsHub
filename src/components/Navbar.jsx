@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Menu, X, Search, SearchX } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import SearchInput from './SearchInput';
 import Select from './Select';
 import PropTypes from 'prop-types';
 
@@ -9,27 +8,13 @@ const Navbar = ({
   uniqueSources,
   isLoading,
   onSourceChange,
-  onSearch,
   onDateChange,
   clearFilters,
-  hasFilters
+  hasFilters,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedSource, setSelectedSource] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
-
-  const handleSearch = (query) => {
-    if (query.length < 2) {
-      alert("Please enter atleast 2 characters")
-      return
-
-    }
-
-    setSearchQuery(query);
-    onSearch?.(query);
-  };
 
   const handleDateChange = (e) => {
     const value = e.target.value;
@@ -44,7 +29,6 @@ const Navbar = ({
   };
 
   const handleClearFilters = () => {
-    setSearchQuery('');
     setSelectedSource('');
     setSelectedDate('');
     clearFilters(); // Call the parent-provided function to reset parent filters
@@ -68,7 +52,7 @@ const Navbar = ({
   );
 
   return (
-    <nav className="bg-white/70 backdrop-blur-md shadow-md sticky top-0 z-40">
+    <nav className="bg-white/70 backdrop-blur-md">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center flex-1">
@@ -86,22 +70,12 @@ const Navbar = ({
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Your Feed Button */}
             <Link
               to="/feed"
-              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-4 py-1.5 rounded-md ml-1 border-2 border-blue-400"
+              className="text-gray-700  hover:text-indigo-500 font-medium transition-colors px-4 py-1.5 rounded-md ml-1 border-2 border-blue-400"
             >
               Your Feed
             </Link>
-
-            {/* Search Button */}
-            <button
-              onClick={() => setIsSearchVisible((prev) => !prev)}
-              className="text-gray-700 bg-gray-200 hover:bg-indigo-100 hover:text-indigo-500 font-medium transition-colors px-2 py-1.5 rounded-md ml-1 border-2 border-blue-400"
-              aria-label="Toggle search"
-            >
-              {isSearchVisible ? <SearchX className="h-6 w-6" /> : <Search className="h-6 w-6" />}
-            </button>
 
             {/* Clear Filters Button */}
             {hasFilters && (
@@ -126,12 +100,6 @@ const Navbar = ({
         </div>
       </div>
 
-      {isSearchVisible && (
-        <div className="px-4 pb-4">
-          <SearchInput onSearch={handleSearch} />
-        </div>
-      )}
-
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -147,10 +115,9 @@ Navbar.propTypes = {
   uniqueSources: PropTypes.array,
   isLoading: PropTypes.bool.isRequired,
   onSourceChange: PropTypes.func,
-  onSearch: PropTypes.func,
   onDateChange: PropTypes.func,
-  clearFilters: PropTypes.func.isRequired,
-  hasFilters: PropTypes.bool.isRequired,
+  clearFilters: PropTypes.func,
+  hasFilters: PropTypes.bool,
 };
 
 export default Navbar;

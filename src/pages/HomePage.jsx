@@ -5,16 +5,21 @@ import ArticleCard from '../components/ArticleCard';
 import useArticles from "../hooks/useArticles";
 import CategorySelector from '../components/CategorySelector';
 import useFilter from '../hooks/useFilter';
+import SearchInput from '../components/SearchInput';
 
 function HomePage() {
-  const [keyword, setKeyword] = useState('news');
+  const [keyword, setKeyword] = useState('everything'); // Default keyword
   const { data, error, isLoading } = useArticles(keyword);
   const { filteredData, setSelectedCategories, setSelectedSource, setSelectedDate, clearFilters, selectedCategories, selectedSource, selectedDate } = useFilter(data?.normalizedArticles || []);
 
-  const handleSearch = (searchQuery) => setKeyword(searchQuery);
+  const handleSearch = (searchQuery) => {
+    if (!searchQuery) return;
+    setKeyword(searchQuery)
+  };
   const handleDateFilter = (date) => setSelectedDate(date);
 
-  const hasFilters = selectedCategories.length || selectedSource || selectedDate;
+  const hasFilters = !!(selectedCategories.length || selectedSource || selectedDate);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar
@@ -26,7 +31,7 @@ function HomePage() {
         clearFilters={clearFilters}
         hasFilters={hasFilters}
       />
-
+      <SearchInput onSearch={handleSearch} />
       <main className="mx-auto">
         <CategorySelector
           categories={data?.uniqueCategories || []}
@@ -60,11 +65,14 @@ function HomePage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-masonry">
             {filteredData.map((article, index) => (
-              <ArticleCard key={article.id || `${article.title}-${index}`} article={article} />
+              <div key={article.id || `${article.title}-${index}`} className="overflow-hidden">
+                <ArticleCard article={article} />
+              </div>
             ))}
           </div>
+
         </div>
       </main>
     </div>

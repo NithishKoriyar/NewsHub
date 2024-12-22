@@ -1,164 +1,140 @@
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import usePreferences from "../hooks/usePreferences";
+import useCategoryAndSource from "../hooks/useCategoryAndSource";
 import PreferencesForm from "../components/PreferenceForm";
-import { getPreferencesFromLocalStorage } from "../utils/preferences";
 import Loader from "../components/Loader";
-import useCategorySearch from "../hooks/useCategorySearch";
 import ArticleCard from "../components/ArticleCard";
 import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function PersonalizedFeed() {
   const navigate = useNavigate();
-  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
-  const [preferencesExist, setPreferencesExist] = useState(false);
-  const [showPreferencesForm, setShowPreferencesForm] = useState(false);
-  const [preferences, setPreferences] = useState({
-    sources: [],
-    categories: [],
-    authors: [],
-  });
+  const {
+    preferences,
+    preferencesLoaded,
+    preferencesExist,
+    showPreferencesForm,
+    handleUpdatePreferences,
+    handleClosePreferencesForm,
+  } = usePreferences();
 
-  useEffect(() => {
-    const { sources, categories, authors } = getPreferencesFromLocalStorage();
-    setPreferences({
-      sources: sources ? JSON.parse(sources) : [],
-      categories: categories ? JSON.parse(categories) : [],
-      authors: authors ? JSON.parse(authors) : [],
-    });
-    if (sources || categories || authors) {
-      setPreferencesExist(true);
-    }
-    setPreferencesLoaded(true);
-  }, [showPreferencesForm]);
-
-
-
-  const handleUpdatePreferences = () => {
-    setShowPreferencesForm(true);
-    setPreferencesExist(false);
-  };
-
-  const handleClosePreferencesForm = () => {
-    setShowPreferencesForm(false);
-    setPreferencesExist(true); // Show feed again after closing form
-  };
-
-  const { data, isLoading, isError } = useCategorySearch(preferences.categories, preferences.sources);
+  // Fetch data based on user's preferences (category and source)
+  const { data, isLoading, isError } = useCategoryAndSource(
+    preferences.categories,
+    preferences.sources
+  );
 
   if (!preferencesLoaded) return <Loader />;
 
-  const filterArticles = (articles) => {
-    if (preferences.authors.length === 0) {
-      return {
-        matchedByAuthor: articles,
-        unmatchedArticles: [],
-      };
-    }
-
+  // Function to filter articles based on category, source, and author preferences
+  const filterFeedArticles = (articles) => {
+    const matchedByCategoryAndSource = [];
     const matchedByAuthor = [];
     const unmatchedArticles = [];
 
     articles.forEach((article) => {
-      if (preferences.authors.includes(article.author)) {
+      const matchesCategory = preferences.categories.some((category) =>
+        article.title.includes(category) || article.description.includes(category)
+      );
+
+      const matchesSource = preferences.sources.some((source) =>
+        article.source.name.includes(source)
+      );
+
+      const matchesAuthor = preferences.authors.includes(article.author);
+
+      // Match by category and source first
+      if (matchesCategory && matchesSource) {
+        matchedByCategoryAndSource.push(article);
+      } 
+      // Match by author if category and source are not enough
+      else if (matchesAuthor) {
         matchedByAuthor.push(article);
       } else {
         unmatchedArticles.push(article);
       }
     });
 
-    return {
-      matchedByAuthor,
-      unmatchedArticles,
-    };
+    return { matchedByCategoryAndSource, matchedByAuthor, unmatchedArticles };
   };
 
-  const { matchedByAuthor, unmatchedArticles } = filterArticles(data?.normalizedArticles || []);
+  const {
+    matchedByCategoryAndSource,
+    matchedByAuthor,
+    unmatchedArticles,
+  } = filterFeedArticles(data?.normalizedArticles || []);
 
+  const handlePreferencesClose = () => {
+    handleClosePreferencesForm();
+  };
+
+  // Render articles section function
   const renderArticlesSection = (heading, articles) => (
     <fieldset className="border border-gray-200 rounded-lg p-4 mb-6">
       <legend className="px-2 font-bold text-lg text-gray-700">{heading}</legend>
       {articles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-masonry">
           {articles.map((article, index) => (
             <ArticleCard key={index} article={article} />
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 italic">No articles found for this category.</p>
+        <p className="text-gray-500 italic">No articles found for this section.</p>
       )}
     </fieldset>
   );
-
-  const hasNoMatches =
-    !isLoading &&
-    !isError &&
-    preferences.authors.length > 0 &&
-    matchedByAuthor.length === 0 &&
-    unmatchedArticles.length === 0;
 
   return (
     <div>
       {showPreferencesForm ? (
         <PreferencesForm
           initialPreferences={preferences}
-          onClose={handleClosePreferencesForm}
+          onClose={handlePreferencesClose}
         />
-      ) : (
-        preferencesExist ? (
-          <div>
-            {/* Feed content */}
-            <div className="flex justify-between items-center mb-8 p-2">
-              <span className="flex items-center">
-                <ChevronLeft
-                  size={30}
-                  onClick={() => navigate(-1)}
-                  className="cursor-pointer bg-blue-200 rounded-full"
-                />
-                <h1 className="text-2xl font-bold text-gray-800 ml-3">Feeds</h1>
-              </span>
-              <button
-                onClick={handleUpdatePreferences}
-                className="px-4 py-2 text-blue-600 bg-blue-200 hover:text-blue-800 rounded transition-colors"
-              >
-                Update Pref
-              </button>
-            </div>
-            {isLoading && <Loader />}
-            {isError && <p className="text-red-600">Error loading news...</p>}
-            {!isLoading && !isError && hasNoMatches && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6">
-                <p className="text-yellow-800">
-                  No articles match your selected preferences. Try updating your preferences to see more articles.
-                </p>
-              </div>
-            )}
-            {data && !isLoading && (
-              <div className="space-y-6">
-                {renderArticlesSection(
-                  preferences.authors.length === 0 ? "All Articles" : "Matched by Author",
-                  matchedByAuthor
-                )}
-                {renderArticlesSection(
-                  preferences.sources.length > 0 && preferences.categories.length > 0
-                    ? "Articles"
-                    : preferences.sources.length > 0
-                      ? "Articles by Source"
-                      : preferences.categories.length > 0
-                        ? "Articles by Category"
-                        : "Articles",
-                  unmatchedArticles
-                )}
-              </div>
-            )}
+      ) : preferencesExist ? (
+        <div>
+          <div className="flex justify-between items-center mb-8 p-2 bg-white/70 backdrop-blur-md shadow-md px-4 sticky top-0 z-40">
+            <span className="flex items-center">
+              <ChevronLeft
+                size={30}
+                onClick={() => navigate(-1)}
+                className="cursor-pointer bg-blue-200 rounded-full"
+              />
+              <h1 className="text-2xl font-bold text-gray-800 ml-3">
+                Feeds
+              </h1>
+            </span>
+            <button
+              onClick={handleUpdatePreferences}
+              className="px-4 py-2 text-blue-600 bg-blue-200 hover:text-blue-800 rounded transition-colors"
+            >
+              Update Preferences
+            </button>
           </div>
-        ) : (
-          <PreferencesForm
-            initialPreferences={preferences}
-            onClose={handleClosePreferencesForm}
-          />
-        )
+
+          {isLoading && <Loader />}
+          {isError && <p className="text-red-600">Error loading news...</p>}
+
+          {/* Display matched articles first */}
+          {!isLoading && !isError && data && (
+            <div className="space-y-6">
+              {/* Articles that match category and source */}
+              {matchedByCategoryAndSource.length > 0 &&
+                renderArticlesSection("Matched by Category & Source", matchedByCategoryAndSource)}
+
+              {/* Articles matched by author */}
+              {matchedByAuthor.length > 0 && renderArticlesSection("Matched by Author", matchedByAuthor)}
+
+              {/* Unmatched articles (those that didn't match category, source, or author) */}
+              {unmatchedArticles.length > 0 && renderArticlesSection("All Articles", unmatchedArticles)}
+            </div>
+          )}
+        </div>
+      ) : (
+        <PreferencesForm
+          initialPreferences={preferences}
+          onClose={handlePreferencesClose}
+        />
       )}
     </div>
   );
-
 }

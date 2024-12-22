@@ -44,10 +44,10 @@ function ArticleCard({ article }) {
   return (
     <div className="flex flex-col h-full rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
       <ArticleImage imageUrl={image} title={title} />
-      <h2 className="text-2xl font-bold text-gray-800 mb-3 line-clamp-2">
+      <h2 className="text-2xl font-bold text-gray-800 mb-3 ">
         {title}
       </h2>
-      <p className="text-gray-600 mb-4 line-clamp-3">
+      <p className="text-gray-600 mb-4">
         {description}
       </p>
       <div className="flex items-center justify-between">

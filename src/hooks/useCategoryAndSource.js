@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchFromApi, normalizeArticles, extractUniqueValues } from '../utils/apiUtils';
 
-const useCategorySearch = (categories, sources) => {
+const useCategoryAndSource = (categories, sources) => {
     const query = useQuery({
         queryKey: ['articlesByCategoryAndSource', categories, sources],
         queryFn: async () => {
@@ -41,19 +41,23 @@ const useCategorySearch = (categories, sources) => {
 
             ]);
 
-            // Normalize the data
-            const normalizedArticles = responses
+            // Get normalized articles from each successful response
+            let normalizedArticles = responses
                 .filter((res) => res.status === 'fulfilled' && res.value.data)
                 .flatMap((res) => normalizeArticles(res.value.apiType, res.value.data));
 
-            // Extract unique values
+            // Filter out invalid dates and sort all articles together
+            normalizedArticles = normalizedArticles
+                .filter(article => {
+                    const date = new Date(article.date);
+                    return date instanceof Date && !isNaN(date) && article.date !== 'No Date';
+                })
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+
             const uniqueCategories = extractUniqueValues(normalizedArticles, 'category');
             const uniqueSources = extractUniqueValues(normalizedArticles, 'source');
             const uniqueAuthors = extractUniqueValues(normalizedArticles, 'author');
 
-            console.log(uniqueCategories);
-            console.log(uniqueSources);
-            console.log(uniqueAuthors);
 
             return { normalizedArticles, uniqueCategories, uniqueSources, uniqueAuthors };
         },
@@ -65,6 +69,6 @@ const useCategorySearch = (categories, sources) => {
     return { ...query, refetch: query.refetch };
 };
 
-export default useCategorySearch;
+export default useCategoryAndSource;
 
 
