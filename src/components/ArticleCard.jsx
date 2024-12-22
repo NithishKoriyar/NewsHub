@@ -42,35 +42,38 @@ function ArticleCard({ article }) {
   } = article;
 
   return (
-    <div className="flex flex-col h-full rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
-      <ArticleImage imageUrl={image} title={title} />
-      <h2 className="text-2xl font-bold text-gray-800 mb-3 ">
-        {title}
-      </h2>
-      <p className="text-gray-600 mb-4">
-        {description}
-      </p>
-      <div className="flex items-center justify-between">
-        <ArticleMetadata
-          author={author}
-          source={source}
-          date={date}
-        />
+    <div className="flex flex-col sm:flex-row h-full rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+      {image && (
+        <div className="sm:w-1/3">
+          <ArticleImage imageUrl={image} title={title} />
+        </div>
+      )}
+      <div className={`flex flex-col justify-between ${image ? 'sm:w-2/3 sm:pl-6' : 'w-full'}`}>
+        <h2 className="text-2xl font-bold text-gray-800 mb-3">
+          {title}
+        </h2>
+        <p className="text-gray-600 mb-4 flex-grow">
+          {description}
+        </p>
+        <div className="flex items-center justify-between">
+          <ArticleMetadata
+            author={author}
+            source={source}
+            date={date}
+          />
+        </div>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-center text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Read more
+        </a>
       </div>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-center text-blue-600 hover:text-blue-800 font-medium"
-      >
-        Read more
-      </a>
-
     </div>
   );
 }
-
-
 
 // Prop types for the components
 ArticleMetadata.propTypes = {

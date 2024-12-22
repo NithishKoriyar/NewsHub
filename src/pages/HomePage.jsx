@@ -10,6 +10,7 @@ import SearchInput from '../components/SearchInput';
 function HomePage() {
   const [keyword, setKeyword] = useState('everything'); // Default keyword
   const { data, error, isLoading } = useArticles(keyword);
+  // Destructure the filtered data and filter functions from the custom hook
   const { filteredData, setSelectedCategories, setSelectedSource, setSelectedDate, clearFilters, selectedCategories, selectedSource, selectedDate } = useFilter(data?.normalizedArticles || []);
 
   const handleSearch = (searchQuery) => {
@@ -65,7 +66,7 @@ function HomePage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-masonry">
+          <div className="">
             {filteredData.map((article, index) => (
               <div key={article.id || `${article.title}-${index}`} className="overflow-hidden">
                 <ArticleCard article={article} />

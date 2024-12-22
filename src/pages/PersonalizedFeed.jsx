@@ -30,18 +30,23 @@ export default function PersonalizedFeed() {
     const matchedByCategoryAndSource = [];
     const matchedByAuthor = [];
     const unmatchedArticles = [];
-
+  
+    // Ensure preferences are valid arrays before using includes
+    const categories = Array.isArray(preferences.categories) ? preferences.categories : [];
+    const sources = Array.isArray(preferences.sources) ? preferences.sources : [];
+    const authors = Array.isArray(preferences.authors) ? preferences.authors : [];
+  
     articles.forEach((article) => {
-      const matchesCategory = preferences.categories.some((category) =>
-        article.title.includes(category) || article.description.includes(category)
+      const matchesCategory = categories.some((category) =>
+        article?.title?.includes(category) || article?.description?.includes(category)
       );
-
-      const matchesSource = preferences.sources.some((source) =>
-        article.source.name.includes(source)
+  
+      const matchesSource = sources.some((source) =>
+        article?.source?.name?.includes(source)
       );
-
-      const matchesAuthor = preferences.authors.includes(article.author);
-
+  
+      const matchesAuthor = authors.includes(article.author);
+  
       // Match by category and source first
       if (matchesCategory && matchesSource) {
         matchedByCategoryAndSource.push(article);
@@ -53,9 +58,10 @@ export default function PersonalizedFeed() {
         unmatchedArticles.push(article);
       }
     });
-
+  
     return { matchedByCategoryAndSource, matchedByAuthor, unmatchedArticles };
   };
+  
 
   const {
     matchedByCategoryAndSource,
@@ -72,7 +78,7 @@ export default function PersonalizedFeed() {
     <fieldset className="border border-gray-200 rounded-lg p-4 mb-6">
       <legend className="px-2 font-bold text-lg text-gray-700">{heading}</legend>
       {articles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-masonry">
+        <div className="">
           {articles.map((article, index) => (
             <ArticleCard key={index} article={article} />
           ))}
