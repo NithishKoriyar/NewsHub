@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { formatDate } from '../../helper/formatDate';
 import noImageInUrl from '../../assets/No_Image_Available.jpg';
 
-// Separate component for article metadata
 const ArticleMetadata = ({ author, source, date }) => (
   <small className="text-sm text-gray-500">
     {[
@@ -13,20 +12,16 @@ const ArticleMetadata = ({ author, source, date }) => (
   </small>
 );
 
-// Separate component for article image
 const ArticleImage = ({ imageUrl, title }) => {
   if (!imageUrl) return null;
-
   return (
-    <div className="mb-4 rounded-lg overflow-hidden">
-      <img
-        src={imageUrl}
-        loading="lazy"
-        alt={title || 'Article image'}
-        className="w-full h-48 object-cover"
-        onError={(e) => (e.target.src = noImageInUrl)}
-      />
-    </div>
+    <img
+      src={imageUrl}
+      loading="lazy"
+      alt={title || 'Article image'}
+      className="w-full h-72 sm:h-64 md:float-left md:w-96 md:mr-6 rounded-lg object-cover mb-4"
+      onError={(e) => (e.target.src = noImageInUrl)}
+    />
   );
 };
 
@@ -42,40 +37,37 @@ function ArticleCard({ article }) {
   } = article;
 
   return (
-    <div className="flex flex-col sm:flex-row h-full rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
-      {image && (
-        <div className="sm:w-1/3">
-          <ArticleImage imageUrl={image} title={title} />
+    <div className="relative overflow-hidden rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200  z-0">
+      <div className="md:clearfix">
+        <ArticleImage imageUrl={image} title={title} />
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">
+            {title}
+          </h2>
+          <p className="text-gray-600 mb-4">
+            {description}
+          </p>
+          <div className="mt-4">
+            <ArticleMetadata
+              author={author}
+              source={source}
+              date={date}
+            />
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block mt-2 text-blue-600 hover:text-blue-800 font-medium text-center"
+            >
+              Read more
+            </a>
+          </div>
         </div>
-      )}
-      <div className={`flex flex-col justify-between ${image ? 'sm:w-2/3 sm:pl-6' : 'w-full'}`}>
-        <h2 className="text-2xl font-bold text-gray-800 mb-3">
-          {title}
-        </h2>
-        <p className="text-gray-600 mb-4 flex-grow">
-          {description}
-        </p>
-        <div className="flex items-center justify-between">
-          <ArticleMetadata
-            author={author}
-            source={source}
-            date={date}
-          />
-        </div>
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-center text-blue-600 hover:text-blue-800 font-medium"
-        >
-          Read more
-        </a>
       </div>
     </div>
   );
 }
 
-// Prop types for the components
 ArticleMetadata.propTypes = {
   author: PropTypes.string,
   source: PropTypes.string,

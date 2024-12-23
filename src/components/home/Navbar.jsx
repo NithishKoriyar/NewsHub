@@ -3,6 +3,8 @@ import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Select from '../common/Select';
 import PropTypes from 'prop-types';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Navbar = ({
   uniqueSources,
@@ -16,11 +18,14 @@ const Navbar = ({
   const [selectedSource, setSelectedSource] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
-  const handleDateChange = (e) => {
-    const value = e.target.value;
-    setSelectedDate(value);
-    onDateChange?.(value);
+  const handleDateChange = (date) => {
+    if (!date) return;
+    const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    const formattedDate = offsetDate.toISOString().split('T')[0];
+    setSelectedDate(formattedDate);
+    onDateChange?.(formattedDate);
   };
+
 
   const handleSourceChange = (e) => {
     const value = e.target.value;
@@ -42,13 +47,18 @@ const Navbar = ({
         onChange={handleSourceChange}
         placeholder="Select Source"
       />
-      
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={handleDateChange}
-        className="border p-2 rounded-md"
+
+      <DatePicker
+        selected={selectedDate ? new Date(selectedDate) : null} // Parse formatted date back to a Date object
+        onChange={handleDateChange} // Use the updated handler
+        dateFormat="yyyy/MM/dd"
+        placeholderText="Choose a date"
+        className="w-full p-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        popperPlacement="bottom-start"
+        popperClassName="custom-datepicker-popper"
+        portalId="root-portal"
       />
+
     </div>
   );
 

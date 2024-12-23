@@ -11,7 +11,7 @@ const SearchInput = ({ onSearch }) => {
   }
 
   return (
-    <div className='px-4 p-2 sticky top-0 z-40 bg-white/70 backdrop-blur-md shadow-md'>
+    <div className='px-4 p-2 sticky top-0 z-10 bg-white/70 backdrop-blur-md shadow-md'>
     <form onSubmit={handleSubmit} className="relative w-full flex justify-center">
       <input
         type="text"

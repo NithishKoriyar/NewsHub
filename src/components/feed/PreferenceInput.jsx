@@ -69,7 +69,7 @@ function PreferenceInput({ label, items, setItems, allItems }) {
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="border border-gray-300 rounded-md overflow-y-auto max-h-[100px]">
+        <div className="border border-gray-300 rounded-md overflow-y-auto max-h-[200px]">
           {filteredItems.map((item) => {
             const displayName = item.name || item;
             return (

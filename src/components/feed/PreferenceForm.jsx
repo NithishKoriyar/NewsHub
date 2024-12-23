@@ -17,18 +17,10 @@ export default function PreferencesForm({ initialPreferences, onClose }) {
       alert("Please select at least one category.");
       return;
     }
-
     // Save preferences to local storage.
     savePreferencesToLocalStorage({ sources, categories, authors });
     onClose();
     alert("Preferences saved!");
-
-    // For debugging or backend submission:
-    console.log({
-      sources: sources.map((id) => allSources.find((src) => src.id === id)?.name),
-      categories,
-      authors,
-    });
   };
 
   const hasPreference =

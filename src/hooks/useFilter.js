@@ -10,10 +10,11 @@ const useFilter = (articles) => {
     return articles.filter(article => {
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(article.category);
       const sourceMatch = !selectedSource || article.source === selectedSource;
-      const dateMatch = !selectedDate || normalizeDate(article.date) === normalizeDate(selectedDate);
+      const dateMatch = !selectedDate || normalizeDate(article.date) === selectedDate;
       return categoryMatch && sourceMatch && dateMatch;
     });
   }, [articles, selectedCategories, selectedSource, selectedDate]);
+  
 
   const clearFilters = () => {
     setSelectedSource('');

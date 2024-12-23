@@ -1,22 +1,22 @@
-  // Helper function to normalize date to YYYY-MM-DD format
-  const normalizeDate = (dateString) => {
-    if (!dateString) return null;
-    try {
-      // Handle ISO format
-      if (dateString.includes('T')) {
-        return dateString.split('T')[0];
-      }
-      // Handle space-separated format
-      if (dateString.includes(' ')) {
-        return dateString.split(' ')[0];
-      }
-      // Handle just date format
-      return dateString;
-    } catch (error) {
-      console.warn('Date parsing error:', dateString);
-      console.error(error);
-      return null;
-    }
-  };
+// Helper function to normalize date to YYYY-MM-DD format with timezone adjustment
+const normalizeDate = (dateString) => {
+  if (typeof dateString !== 'string' || !dateString.trim()) {
+    return null;
+  }
 
-  export default normalizeDate;
+  try {
+    // Parse the date string into a Date object
+    const date = new Date(dateString);
+
+    // Adjust the date for local timezone offset
+    const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+
+    // Return the normalized date in YYYY-MM-DD format
+    return offsetDate.toISOString().split('T')[0];
+  } catch (error) {
+    console.error('Date parsing error:', dateString, error);
+    return null;
+  }
+};
+
+export default normalizeDate;
