@@ -68,7 +68,7 @@ function HomePage() {
 
           <div className="">
             {filteredData.map((article, index) => (
-              <div key={article.id || `${article.title}-${index}`} className="overflow-hidden">
+              <div key={article.id || `${article.title}-${index}`}>
                 <ArticleCard article={article} />
               </div>
             ))}

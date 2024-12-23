@@ -17,7 +17,6 @@ export default function PersonalizedFeed() {
     handleClosePreferencesForm,
   } = usePreferences();
 
-  // Fetch data based on user's preferences (category and source)
   const { data, isLoading, isError } = useCategoryAndSource(
     preferences.categories,
     preferences.sources
@@ -25,68 +24,98 @@ export default function PersonalizedFeed() {
 
   if (!preferencesLoaded) return <Loader />;
 
-  // Function to filter articles based on category, source, and author preferences
-  const filterFeedArticles = (articles) => {
-    const matchedByCategoryAndSource = [];
-    const matchedByAuthor = [];
-    const unmatchedArticles = [];
-  
-    // Ensure preferences are valid arrays before using includes
+  const containsAnyTerm = (text = "", terms = []) => {
+    if (!text) return false;
+    return terms.some(term =>
+      text.toLowerCase().includes(term.toLowerCase())
+    );
+  };
+
+  const getArticleMatches = (article) => {
     const categories = Array.isArray(preferences.categories) ? preferences.categories : [];
     const sources = Array.isArray(preferences.sources) ? preferences.sources : [];
     const authors = Array.isArray(preferences.authors) ? preferences.authors : [];
-  
-    articles.forEach((article) => {
-      const matchesCategory = categories.some((category) =>
-        article?.title?.includes(category) || article?.description?.includes(category)
-      );
-  
-      const matchesSource = sources.some((source) =>
-        article?.source?.name?.includes(source)
-      );
-  
-      const matchesAuthor = authors.includes(article.author);
-  
-      // Match by category and source first
-      if (matchesCategory && matchesSource) {
-        matchedByCategoryAndSource.push(article);
-      } 
-      // Match by author if category and source are not enough
-      else if (matchesAuthor) {
-        matchedByAuthor.push(article);
-      } else {
-        unmatchedArticles.push(article);
+
+    // Check category matches
+    const matchedCategories = categories.filter(category =>
+      article.title?.toLowerCase().includes(category.toLowerCase()) ||
+      article.description?.toLowerCase().includes(category.toLowerCase()) ||
+      article.category?.toLowerCase().includes(category.toLowerCase())
+    );
+
+    // Check source match
+    const matchesSource = article.source && containsAnyTerm(article.source, sources);
+
+    // Check author match
+    const matchesAuthor = article.author && containsAnyTerm(article.author, authors);
+
+    // Calculate total matches
+    const matchScore = (matchedCategories.length > 0 ? 1 : 0) +
+      (matchesSource ? 1 : 0) +
+      (matchesAuthor ? 1 : 0);
+
+    return {
+      ...article,
+      matchScore,
+      matchDetails: {
+        categories: matchedCategories,
+        hasSourceMatch: matchesSource,
+        hasAuthorMatch: matchesAuthor
       }
-    });
-  
-    return { matchedByCategoryAndSource, matchedByAuthor, unmatchedArticles };
-  };
-  
-
-  const {
-    matchedByCategoryAndSource,
-    matchedByAuthor,
-    unmatchedArticles,
-  } = filterFeedArticles(data?.normalizedArticles || []);
-
-  const handlePreferencesClose = () => {
-    handleClosePreferencesForm();
+    };
   };
 
-  // Render articles section function
-  const renderArticlesSection = (heading, articles) => (
-    <fieldset className="border border-gray-200 rounded-lg p-4 mb-6">
-      <legend className="px-2 font-bold text-lg text-gray-700">{heading}</legend>
-      {articles.length > 0 ? (
-        <div className="">
-          {articles.map((article, index) => (
-            <ArticleCard key={index} article={article} />
-          ))}
+  const filterFeedArticles = (articles) => {
+    // Process each article to get match information
+    const processedArticles = articles.map(getArticleMatches);
+
+    // Remove duplicates (based on URL) and keep the one with highest match score
+    const uniqueArticles = Array.from(
+      processedArticles.reduce((map, article) => {
+        const existing = map.get(article.url);
+        if (!existing || existing.matchScore < article.matchScore) {
+          map.set(article.url, article);
+        }
+        return map;
+      }, new Map()).values()
+    );
+
+    // Sort by match score (3 matches → 2 matches → 1 match → 0 matches)
+    return uniqueArticles.sort((a, b) => b.matchScore - a.matchScore);
+  };
+
+  const sortedArticles = filterFeedArticles(data?.normalizedArticles || []);
+
+
+  const renderArticles = (articles) => (
+    <div className="space-y-6">
+      {articles.map((article) => (
+        <div key={article.url} >
+          <ArticleCard article={article} />
         </div>
-      ) : (
-        <p className="text-gray-500 italic">No articles found for this section.</p>
-      )}
-    </fieldset>
+      ))}
+    </div>
+  );
+
+  const renderHeader = () => (
+    <div className="flex justify-between items-center mb-8 p-2 bg-white/70 backdrop-blur-md shadow-md px-4 sticky top-0 z-40">
+      <span className="flex items-center">
+        <ChevronLeft
+          size={30}
+          onClick={() => navigate(-1)}
+          className="cursor-pointer bg-blue-200 rounded-full"
+        />
+        <h1 className="text-2xl font-bold text-gray-800 ml-3">
+          Feeds
+        </h1>
+      </span>
+      <button
+        onClick={handleUpdatePreferences}
+        className="px-4 py-2 text-blue-600 bg-blue-200 hover:text-blue-800 rounded transition-colors"
+      >
+        {preferencesExist ? "Update Preferences" : "Set Preferences"}
+      </button>
+    </div>
   );
 
   return (
@@ -94,52 +123,36 @@ export default function PersonalizedFeed() {
       {showPreferencesForm ? (
         <PreferencesForm
           initialPreferences={preferences}
-          onClose={handlePreferencesClose}
+          onClose={handleClosePreferencesForm}
         />
-      ) : preferencesExist ? (
+      ) : (
         <div>
-          <div className="flex justify-between items-center mb-8 p-2 bg-white/70 backdrop-blur-md shadow-md px-4 sticky top-0 z-40">
-            <span className="flex items-center">
-              <ChevronLeft
-                size={30}
-                onClick={() => navigate(-1)}
-                className="cursor-pointer bg-blue-200 rounded-full"
-              />
-              <h1 className="text-2xl font-bold text-gray-800 ml-3">
-                Feeds
-              </h1>
-            </span>
-            <button
-              onClick={handleUpdatePreferences}
-              className="px-4 py-2 text-blue-600 bg-blue-200 hover:text-blue-800 rounded transition-colors"
-            >
-              Update Preferences
-            </button>
-          </div>
+          {renderHeader()}
 
-          {isLoading && <Loader />}
-          {isError && <p className="text-red-600">Error loading news...</p>}
-
-          {/* Display matched articles first */}
-          {!isLoading && !isError && data && (
-            <div className="space-y-6">
-              {/* Articles that match category and source */}
-              {matchedByCategoryAndSource.length > 0 &&
-                renderArticlesSection("Matched by Category & Source", matchedByCategoryAndSource)}
-
-              {/* Articles matched by author */}
-              {matchedByAuthor.length > 0 && renderArticlesSection("Matched by Author", matchedByAuthor)}
-
-              {/* Unmatched articles (those that didn't match category, source, or author) */}
-              {unmatchedArticles.length > 0 && renderArticlesSection("All Articles", unmatchedArticles)}
+          {!preferencesExist ? (
+            <div className="text-center py-10">
+              <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                Welcome to Your Personalized Feed!
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Please set your preferences to start seeing personalized news articles.
+              </p>
+              <button
+                onClick={handleUpdatePreferences}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Set Your Preferences
+              </button>
             </div>
+          ) : (
+            <>
+              {isLoading && <Loader />}
+              {isError && <p className="text-red-600">Error loading news...</p>}
+
+              {!isLoading && !isError && data && renderArticles(sortedArticles)}
+            </>
           )}
         </div>
-      ) : (
-        <PreferencesForm
-          initialPreferences={preferences}
-          onClose={handlePreferencesClose}
-        />
       )}
     </div>
   );

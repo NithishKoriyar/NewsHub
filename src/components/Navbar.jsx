@@ -35,13 +35,14 @@ const Navbar = ({
   };
 
   const renderFilters = () => (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center justify-end space-x-4">
       <Select
         options={uniqueSources || []}
         value={selectedSource}
         onChange={handleSourceChange}
         placeholder="Select Source"
       />
+      
       <input
         type="date"
         value={selectedDate}
