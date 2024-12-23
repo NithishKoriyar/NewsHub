@@ -11,7 +11,7 @@ export const fetchFromApi = async (url, headers = {}) => {
     }
 };
 
-
+// to normalize articles objects from different APIs to a common format
 export const normalizeArticles = (apiType, data) => {
     const normalizers = {
         newsApi: (data) =>

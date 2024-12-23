@@ -16,6 +16,7 @@ function HomePage() {
   const handleSearch = (searchQuery) => {
     if (!searchQuery) return;
     setKeyword(searchQuery)
+    clearFilters();
   };
   const handleDateFilter = (date) => setSelectedDate(date);
 

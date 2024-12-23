@@ -1,4 +1,4 @@
-
+//get user preferences from local storage
 export const getPreferencesFromLocalStorage = () => {
     const sources = localStorage.getItem("sources");
     const categories = localStorage.getItem("categories");

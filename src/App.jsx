@@ -1,18 +1,22 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import PersonalizedFeed from './pages/PersonalizedFeed'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import  { Suspense, lazy } from 'react';
+import Loader from './components/common/Loader';
+
+// Lazy loading components
+const HomePage = lazy(() => import('./pages/HomePage'));
+const PersonalizedFeed = lazy(() => import('./pages/PersonalizedFeed'));
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/feed" element={<PersonalizedFeed />} />
         </Routes>
-      </BrowserRouter>
-    </>
-  )
+      </Suspense>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

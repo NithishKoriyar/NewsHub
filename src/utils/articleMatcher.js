@@ -3,7 +3,7 @@ export const articleMatcher = {
       if (!text) return false;
       return terms.some(term => text.toLowerCase().includes(term.toLowerCase()));
     },
-  
+  //matching category and source and author from preferences with fetched articles because api wont provide ordered data as per personalized
     getMatchDetails: (article, preferences) => {
       const { categories = [], sources = [], authors = [] } = preferences;
   
