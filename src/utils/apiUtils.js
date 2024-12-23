@@ -16,7 +16,7 @@ export const normalizeArticles = (apiType, data) => {
     const normalizers = {
         newsApi: (data) =>
             data?.articles?.filter((article) => article.source?.name !== '[Removed]')?.map((article) => ({
-                               title: article.title || 'No Title',
+                title: article.title || 'No Title',
                 description: article.description || 'No Description',
                 url: article.url || '#',
                 source: article.source?.name || 'Unknown',
@@ -32,7 +32,7 @@ export const normalizeArticles = (apiType, data) => {
                 description: doc.snippet || 'No Description',
                 url: doc.web_url || '#',
                 source: doc.source || 'The New York Times',
-                author: 'Unknown',
+                author: doc.byline?.original || 'Unknown',
                 category: 'General',
                 image: doc.multimedia?.find((media) => media.subtype === 'xlarge')?.url
                     ? `https://www.nytimes.com/${doc.multimedia.find((media) => media.subtype === 'xlarge').url}`
