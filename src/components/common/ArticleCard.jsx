@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { formatDate } from '../helper/formatDate';
-import noImageInUrl from '../assets/No_Image_Available.jpg';
+import { formatDate } from '../../helper/formatDate';
+import noImageInUrl from '../../assets/No_Image_Available.jpg';
 
 // Separate component for article metadata
 const ArticleMetadata = ({ author, source, date }) => (

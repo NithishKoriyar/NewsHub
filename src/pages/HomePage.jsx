@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Loader from '../components/Loader';
-import ArticleCard from '../components/ArticleCard';
 import useArticles from "../hooks/useArticles";
-import CategorySelector from '../components/CategorySelector';
 import useFilter from '../hooks/useFilter';
-import SearchInput from '../components/SearchInput';
+import Navbar from '../components/home/Navbar';
+import Loader from '../components/common/Loader';
+import ArticleCard from '../components/common/ArticleCard';
+import CategorySelector from './../components/home/CategorySelector';
+import SearchInput from './../components/common/SearchInput';
 
 function HomePage() {
   const [keyword, setKeyword] = useState('everything'); // Default keyword

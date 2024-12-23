@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Select from './Select';
+import Select from '../common/Select';
 import PropTypes from 'prop-types';
 
 const Navbar = ({

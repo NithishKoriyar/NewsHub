@@ -1,9 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { savePreferencesToLocalStorage } from "../utils/preferences";
 import PreferenceInput from "./PreferenceInput";
 import { X } from "lucide-react";
-import { allAuthors, allCategories, allSources } from "../constants/PreferencesConstants";
+import { allAuthors, allCategories, allSources } from "../../constants/PreferencesConstants";
+import { savePreferencesToLocalStorage } from "../../utils/preferences";
 
 export default function PreferencesForm({ initialPreferences, onClose }) {
   const [sources, setSources] = useState(initialPreferences.sources);
