@@ -84,3 +84,4 @@ Designing a robust search and filter system to handle multiple filters (date, ca
 
 Ensuring a consistent and user-friendly experience across devices.
 - **Solution**: Tailwind CSS made it easier to create a fully responsive layout, optimized for mobile and desktop users.
+
