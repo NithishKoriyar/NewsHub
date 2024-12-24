@@ -49,8 +49,8 @@ const Navbar = ({
       />
 
       <DatePicker
-        selected={selectedDate ? new Date(selectedDate) : null} // Parse formatted date back to a Date object
-        onChange={handleDateChange} // Use the updated handler
+        selected={selectedDate ? new Date(selectedDate) : null} 
+        onChange={handleDateChange}
         dateFormat="yyyy/MM/dd"
         placeholderText="Choose a date"
         className="w-full p-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -5,7 +5,7 @@ This project is a React.js-based frontend for a news aggregator application. The
 ## Prerequisites
 
 Before you proceed, ensure the following are installed on your system:
-1. [Docker](https://www.docker.com/products/docker-desktop) (version 20.10 or later)
+1. [Docker](https://www.docker.com/products/docker-desktop) 
 2. A terminal or command prompt
 
 ## Getting Started
@@ -44,6 +44,10 @@ Open your browser and navigate to:
 [http://localhost:5173](http://localhost:5173)
 
 **Note**: Use `localhost` instead of the IP address because some APIs decline requests due to CORS (Cross-Origin Resource Sharing) policies.
+
+
+
+
 
 
 

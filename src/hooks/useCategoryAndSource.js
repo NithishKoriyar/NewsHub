@@ -21,7 +21,7 @@ const useCategoryAndSource = (categories, sources) => {
                     data,
                 })),
 
-                // NewsData.io API supports categories, sources are not needed
+                // NewsData.io API supports only categories, sources are not needed
                 fetchFromApi(API_ENDPOINTS.NEWSDATA_API(categoryQuery)).then(data => ({
                     apiType: 'newsDataApi',
                     data,
