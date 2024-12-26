@@ -50,7 +50,7 @@ const useCategoryAndSource = (categories, sources) => {
             // Extract unique categories, sources, and authors
             const uniqueCategories = extractUniqueValues(normalizedArticles, 'category');
             const uniqueSources = extractUniqueValues(normalizedArticles, 'source');
-            const uniqueAuthors = extractUniqueValues(normalizedArticles, 'author');
+            const uniqueAuthors = extractUniqueValues(normalizedArticles, 'author');// Extract unique authors from all articles if needed
 
             return { normalizedArticles, uniqueCategories, uniqueSources, uniqueAuthors };
         },

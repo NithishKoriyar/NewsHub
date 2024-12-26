@@ -3,6 +3,7 @@ import { fetchFromApi, normalizeArticles, extractUniqueValues } from '../utils/a
 import { API_ENDPOINTS } from '../utils/apiEndpoints';
 
 const useArticles = (keyword) => {
+  // used tanstack/react-query for fetching data caching
   const query = useQuery({
     queryKey: ['articles', keyword],
     queryFn: async () => {
@@ -48,9 +49,9 @@ const useArticles = (keyword) => {
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
       // Extract unique categories, sources, and authors
-      const uniqueCategories = extractUniqueValues(normalizedArticles, 'category');
-      const uniqueSources = extractUniqueValues(normalizedArticles, 'source');
-      const uniqueAuthors = extractUniqueValues(normalizedArticles, 'author');
+      const uniqueCategories = extractUniqueValues(normalizedArticles, 'category'); // Extract unique categories
+      const uniqueSources = extractUniqueValues(normalizedArticles, 'source'); // Extract unique sources
+      const uniqueAuthors = extractUniqueValues(normalizedArticles, 'author'); // Extract unique authors
 
       return { normalizedArticles, uniqueCategories, uniqueSources, uniqueAuthors };
     },

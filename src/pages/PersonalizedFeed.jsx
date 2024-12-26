@@ -23,7 +23,7 @@ export const PersonalizedFeed = () => {
     preferences.sources
   );
 
-  const sortedArticles = useFeedArticleFiltering(data?.normalizedArticles, preferences);
+  const sortedArticles = useFeedArticleFiltering(data?.normalizedArticles, preferences); // hook for filtering articles
 
   if (!preferencesLoaded) return <Loader />;
 

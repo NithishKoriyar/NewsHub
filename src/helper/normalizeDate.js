@@ -5,12 +5,9 @@ const normalizeDate = (dateString) => {
   }
 
   try {
-    // Parse the date string into a Date object
     const date = new Date(dateString);
-
     // Adjust the date for local timezone offset
     const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-
     // Return the normalized date in YYYY-MM-DD format
     return offsetDate.toISOString().split('T')[0];
   } catch (error) {
