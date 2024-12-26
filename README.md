@@ -84,6 +84,8 @@ News APIs had strict rate limits, making it challenging to fetch and combine dat
 Designing a robust search and filter system to handle multiple filters (date, category, source) was complex.
 - **Solution**: I utilized efficient state management in React and ensured smooth performance for large datasets.
 
+Designing a robust search and filter system to handle multiple filters (date, category, source) was complex. Additionally, some APIs did not provide author or source information, making filtering by author and source challenging. Filtering by author was particularly difficult due to the large number of authors and the absence of an author parameter in the API responses. Similarly, some APIs lacked source information, further complicating the filtering process.
+
 #### Responsive Design
 
 Ensuring a consistent and user-friendly experience across devices.
